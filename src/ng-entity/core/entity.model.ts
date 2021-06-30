@@ -1,5 +1,5 @@
 import {Component} from "./component.model";
-import {Type} from "./type.type";
+import {Type} from "./types/type.type";
 
 export abstract class Entity {
   public name: string;
@@ -9,6 +9,10 @@ export abstract class Entity {
   protected constructor(name: string) {
     this.name = name;
     this._components = [];
+  }
+
+  public update() {
+    this._components.forEach(component => component.update());
   }
 
   public addComponent<T extends Component>(component: T): void {
@@ -31,7 +35,7 @@ export abstract class Entity {
     const component = this._components[index];
 
     if (index && component) {
-      component.entity = null;
+      component.entity = undefined;
       this._components.splice(index, 1);
     }
   }
