@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {Canvas} from './entities/canvas.entity';
 
 @Component({
   selector: 'app-root',
@@ -8,9 +7,7 @@ import {Canvas} from './entities/canvas.entity';
 })
 export class AppComponent {
   title = 'ECS';
-  canvas = new Canvas('canvas');
 
   constructor() {
-
   }
 }
