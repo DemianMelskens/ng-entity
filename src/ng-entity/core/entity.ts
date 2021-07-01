@@ -1,14 +1,14 @@
-import {Component} from "./component";
 import {Awakable, Updatable} from './interfaces';
-import {Type} from './types';
+import {Class} from './types';
+import {Component} from './component';
 
 export abstract class Entity implements Updatable, Awakable {
   private readonly _components: Component[]
 
-  public name: string;
+  public id: number | string;
 
-  protected constructor(name: string) {
-    this.name = name;
+  protected constructor(name: number | string) {
+    this.id = name;
     this._components = [];
   }
 
@@ -25,18 +25,18 @@ export abstract class Entity implements Updatable, Awakable {
     component.entity = this;
   }
 
-  public getComponent<T extends Component>(type: Type<T>): T {
-    const component = this._components.find(comp => comp instanceof type);
+  public getComponent<T extends Component>(clazz: Class<T>): T {
+    const component = this._components.find(comp => comp instanceof clazz);
 
     if (component) {
       return component as T;
     }
 
-    throw new Error(`Component ${type.name} not found on Entity ${this.name}`)
+    throw new Error(`Component ${clazz.name} not found on Entity ${this.id}`)
   }
 
-  public removeComponent<T extends Component>(type: Type<T>): void {
-    const index = this._components.findIndex(comp => comp instanceof type);
+  public removeComponent<T extends Component>(clazz: Class<T>): void {
+    const index = this._components.findIndex(comp => comp instanceof clazz);
     const component = this._components[index];
 
     if (index && component) {
@@ -45,7 +45,7 @@ export abstract class Entity implements Updatable, Awakable {
     }
   }
 
-  public hasComponent<T extends Component>(type: Type<T>): boolean {
-    return this._components.findIndex(comp => comp instanceof type) >= 0;
+  public hasComponent<T extends Component>(clazz: Class<T>): boolean {
+    return this._components.findIndex(comp => comp instanceof clazz) >= 0;
   }
 }

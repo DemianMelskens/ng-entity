@@ -1,14 +1,13 @@
-import {Component} from "../core/component";
+import {Component, Entity} from '../core';
 import {Vector3d} from '../domain/vector3d.model';
-import {Entity} from '../core/entity';
 
-export class TransformComponent implements Component {
+export class Transform implements Component {
   entity: Entity | null;
   transform: Vector3d;
 
-  constructor() {
+  constructor(transform: Vector3d = Vector3d.zero()) {
     this.entity = null;
-    this.transform = Vector3d.zero();
+    this.transform = transform;
   }
 
   update(deltaTime: number): void {
