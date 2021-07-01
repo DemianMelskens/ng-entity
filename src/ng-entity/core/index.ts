@@ -1,2 +1,2 @@
-export * from './component';
-export * from './entity';
+export * from './abstract-component';
+export * from './abstract-entity';

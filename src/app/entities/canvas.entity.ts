@@ -1,8 +1,8 @@
-import {Entity} from '../../ng-entity/core/entity';
+import {AbstractEntity} from '../../ng-entity/core/abstractEntity';
 
-export class Canvas extends Entity {
+export class Canvas extends AbstractEntity {
   private _lastTimestamp: number;
-  private readonly _entities: Entity[];
+  private readonly _entities: AbstractEntity[];
 
   constructor(name: string) {
     super(name);
@@ -14,7 +14,7 @@ export class Canvas extends Entity {
     return this._entities;
   }
 
-  public addEntity(entity: Entity): void {
+  public addEntity(entity: AbstractEntity): void {
     this._entities.push(entity);
   }
 

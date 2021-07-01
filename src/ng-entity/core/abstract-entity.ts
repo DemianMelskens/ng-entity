@@ -1,8 +1,8 @@
-import {Awakable, Updatable} from './interfaces';
+import {Startable, Updatable} from './interfaces';
 import {Class} from './types';
-import {Component} from './component';
+import {Component} from './interfaces/component';
 
-export abstract class Entity implements Updatable, Awakable {
+export abstract class AbstractEntity implements Updatable, Startable {
   private readonly _components: Component[]
 
   public id: number | string;
@@ -12,8 +12,8 @@ export abstract class Entity implements Updatable, Awakable {
     this._components = [];
   }
 
-  public awake(): void {
-    this._components.forEach(comp => comp.awake());
+  public start(): void {
+    this._components.forEach(comp => comp.start());
   }
 
   public update(deltaTime: number) {

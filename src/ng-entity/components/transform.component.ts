@@ -1,18 +1,11 @@
-import {Component, Entity} from '../core';
-import {Vector3d} from '../domain/vector3d.model';
+import {AbstractComponent} from '../core';
+import {Vector3d} from '../core/domain';
 
-export class Transform implements Component {
-  entity: Entity | null;
+export class Transform extends AbstractComponent {
   transform: Vector3d;
 
   constructor(transform: Vector3d = Vector3d.zero()) {
-    this.entity = null;
+    super();
     this.transform = transform;
-  }
-
-  update(deltaTime: number): void {
-  }
-
-  awake(): void {
   }
 }
