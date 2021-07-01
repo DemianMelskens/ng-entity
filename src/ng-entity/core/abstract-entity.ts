@@ -25,14 +25,9 @@ export abstract class AbstractEntity implements Updatable, Startable {
     component.entity = this;
   }
 
-  public getComponent<T extends Component>(clazz: Class<T>): T {
+  public getComponent<T extends Component>(clazz: Class<T>): T | null {
     const component = this._components.find(comp => comp instanceof clazz);
-
-    if (component) {
-      return component as T;
-    }
-
-    throw new Error(`Component ${clazz.name} not found on Entity ${this.id}`)
+    return component as T ?? null;
   }
 
   public removeComponent<T extends Component>(clazz: Class<T>): void {
