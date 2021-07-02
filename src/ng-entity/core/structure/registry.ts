@@ -18,30 +18,44 @@ export class Registry {
     return entity;
   }
 
-  public emplace<T extends Component>(clazz: Class<T>, entity: number, ...args: any[]): T {
+  public emplace<T extends Component>(entity: number, clazz: Class<T>, ...args: any[]): T {
     const component = new clazz(args);
     this._components.push({entity, component});
     return component;
   }
 
-  public get<T extends Component>(clazz: Class<T>, entity: number): T | undefined {
+  public get<T extends Component>(entity: number, clazz: Class<T>): T | undefined {
     const entry = this._components.find(entry => (entry.entity === entity && entry.component instanceof clazz));
     return entry ? entry.component as T : undefined;
   }
 
-  public remove<T extends Component>(clazz: Class<T>, entity: number): void {
+  public remove<T extends Component>(entity: number, clazz: Class<T>): void {
     const index = this._components.findIndex(entry => (entry.entity === entity && entry.component instanceof clazz));
     this._components.splice(index, 1);
   }
 
-  // returns group with all entities that contain wanted components and all components
-  public group(...clazzes: Class<any>[]): Group[] {
-    new Group(this._components.filter(entry => clazzes.some(clazz => entry.component instanceof clazz)))
-    return;
+  public group(...clazzes: Class<any>[]): Group {
+    const entities: number[] = [];
+    const components: ComponentEntry[] = [];
+
+    this._entities.forEach(
+      entity => {
+        const entityComponents = this._components.filter(
+          entry => entry.entity === entity && clazzes.some(clazz => entry.component instanceof clazz)
+        );
+
+        if (components.length > 0) {
+          entities.push(entity);
+          components.push(...entityComponents);
+        }
+      }
+    );
+
+    return new Group(entities, components);
   }
 
   public has<T extends Component>(clazz: Class<T>, entity: number): boolean {
-    const entry = this.get(clazz, entity);
+    const entry = this.get(entity, clazz);
     return entry !== undefined;
   }
 

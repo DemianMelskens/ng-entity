@@ -18,16 +18,16 @@ export class Entity {
 
   public addComponent<T extends Component>(clazz: Class<T>, ...args: any[]): T {
     ASSERT(this.hasComponent(clazz), `Entity already has component of type: ${clazz.name}`);
-    return this.scene.registry.emplace(clazz, this.id, args) as T;
+    return this.scene.registry.emplace(this.id, clazz, args) as T;
   }
 
   public getComponent<T extends Component>(clazz: Class<T>): T {
     ASSERT(this.hasComponent(clazz), `Entity does not have component of type: ${clazz.name}`);
-    return this.scene.registry.get(clazz, this.id) as T;
+    return this.scene.registry.get(this.id, clazz) as T;
   }
 
   public removeComponent<T extends Component>(clazz: Class<T>): void {
-    return this.scene.registry.remove(clazz, this.id);
+    return this.scene.registry.remove(this.id, clazz);
   }
 
   public hasComponent<T extends Component>(clazz: Class<T>): boolean {
