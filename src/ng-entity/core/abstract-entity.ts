@@ -1,14 +1,11 @@
-import {Startable, Updatable} from './interfaces';
 import {Class} from './types';
-import {Component} from './interfaces/component';
+import {Component, Entity} from './interfaces';
 
-export abstract class AbstractEntity implements Updatable, Startable {
-  private readonly _components: Component[]
+export abstract class AbstractEntity implements Entity {
+  public id: number = -1;
+  private readonly _components: Component[];
 
-  public id: number | string;
-
-  protected constructor(name: number | string) {
-    this.id = name;
+  public constructor() {
     this._components = [];
   }
 
@@ -22,12 +19,17 @@ export abstract class AbstractEntity implements Updatable, Startable {
 
   public addComponent<T extends Component>(component: T): void {
     this._components.push(component)
-    component.entity = this;
+    component.setEntity(this);
   }
 
-  public getComponent<T extends Component>(clazz: Class<T>): T | null {
+  public getComponent<T extends Component>(clazz: Class<T>): T {
     const component = this._components.find(comp => comp instanceof clazz);
-    return component as T ?? null;
+
+    if (component) {
+      return component as T;
+    }
+
+    throw new Error(`No component for type: ${clazz.name}`);
   }
 
   public removeComponent<T extends Component>(clazz: Class<T>): void {
@@ -35,7 +37,7 @@ export abstract class AbstractEntity implements Updatable, Startable {
     const component = this._components[index];
 
     if (index && component) {
-      component.entity = null;
+      component.setEntity(null);
       this._components.splice(index, 1);
     }
   }

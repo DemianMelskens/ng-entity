@@ -1,3 +1,5 @@
-export interface System {
+import {Component} from "./interfaces";
 
+export interface System<T extends Component> {
+  
 }

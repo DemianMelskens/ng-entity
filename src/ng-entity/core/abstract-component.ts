@@ -1,14 +1,20 @@
-import {Component} from "./interfaces/component";
-import {AbstractEntity} from "./abstract-entity";
+import {Component, Entity} from "./interfaces";
 
 export abstract class AbstractComponent implements Component {
-  entity: AbstractEntity | null = null;
+  private _entity: Entity | null = null;
 
-  start(): void {
-    throw new Error('Not implemented yet!');
+  getEntity(): Entity {
+    if (this._entity) {
+      return this._entity;
+    }
+    throw new Error('Entity for component was not set!');
   }
 
-  update(deltaTime: number): void {
-    throw new Error('Not implemented yet!');
+  setEntity(entity: Entity | null): void {
+    this._entity = entity;
   }
+
+  abstract start(): void;
+
+  abstract update(deltaTime: number): void;
 }
