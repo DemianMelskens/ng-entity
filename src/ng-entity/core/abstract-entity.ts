@@ -1,11 +1,12 @@
 import {Class} from './types';
 import {Component, Entity} from './interfaces';
 
-export abstract class AbstractEntity implements Entity {
-  public id: number = -1;
+export class AbstractEntity implements Entity {
+  public id: number | string;
   private readonly _components: Component[];
 
-  public constructor() {
+  public constructor(id: number | string) {
+    this.id = id;
     this._components = [];
   }
 
