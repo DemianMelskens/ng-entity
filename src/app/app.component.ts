@@ -1,7 +1,4 @@
 import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
-import {EntityManager} from "../ng-entity/core/managers/entity.manager";
-import {Canvas} from "./entities";
-import {CanvasManager} from "../ng-entity/core/managers/canvas.manager";
 
 @Component({
   selector: 'app-root',
@@ -16,11 +13,6 @@ export class AppComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    CanvasManager.getInstance().addLayer(this.canvas!.nativeElement);
-
-    const entityManager = EntityManager.getInstance()
-    const canvas = entityManager.createEntity(Canvas);
-    canvas.start();
 
   }
 }

@@ -1,17 +1,8 @@
-import {AbstractComponent} from '../core';
 import {Color} from "../core/domain";
+import {Component} from "../core/interfaces";
 
-export class ColorComponent extends AbstractComponent {
-  color: Color;
+export class ColorComponent implements Component {
 
-  constructor(color: Color) {
-    super();
-    this.color = color;
-  }
-
-  start(): void {
-  }
-
-  update(deltaTime: number): void {
+  constructor(public color: Color) {
   }
 }

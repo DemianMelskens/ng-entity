@@ -1,51 +1,45 @@
+import {Vector4d} from "./vectors/vector4d.model";
 import {ColorType} from "../types";
+import {Vector3d} from "./vectors/vector3d.model";
 
 export class Color {
-  public readonly type: ColorType;
-  public readonly r: number;
-  public readonly g: number;
-  public readonly b: number;
-  public readonly a?: number;
+  private _vector4d: Vector4d;
 
-  private constructor(type: ColorType, r: number, g: number, b: number, a?: number) {
-    if (!Color.IsValidChannel(r)) {
+  private constructor(vector4d: Vector4d) {
+    if (!Color.IsValidChannel(vector4d.x)) {
       throw new Error('Provided incorrect value for Red channel')
     }
 
-    if (!Color.IsValidChannel(g)) {
+    if (!Color.IsValidChannel(vector4d.y)) {
       throw new Error('Provided incorrect value for Green channel')
     }
 
-    if (!Color.IsValidChannel(b)) {
+    if (!Color.IsValidChannel(vector4d.z)) {
       throw new Error('Provided incorrect value for Green channel')
     }
 
-    if (a !== undefined && !Color.IsValidChannel(a, true)) {
+    if (vector4d.w !== undefined && !Color.IsValidChannel(vector4d.w, true)) {
       throw new Error('Provided incorrect value for Alpha channel')
     }
 
-    this.type = type;
-    this.r = r;
-    this.g = g;
-    this.b = b;
-    this.a = a;
+    this._vector4d = vector4d;
   }
 
-  public toString() {
-    switch (this.type) {
+  public toString(type: ColorType) {
+    switch (type) {
       case "rgb":
-        return `rgb(${this.r}, ${this.g}, ${this.b})`;
+        return `rgb(${this._vector4d.x}, ${this._vector4d.y}, ${this._vector4d.z})`;
       case "rgba":
-        return `rgba(${this.r}, ${this.g}, ${this.b}, ${this.a})`;
+        return `rgba(${this._vector4d.x}, ${this._vector4d.y}, ${this._vector4d.z}, ${this._vector4d.w})`;
     }
   }
 
-  public static rgb(r: number, g: number, b: number): Color {
-    return new Color('rgb', r, g, b);
+  public static rgb(vector3d: Vector3d): Color {
+    return new Color(new Vector4d(vector3d.x, vector3d.y, vector3d.z, 1));
   }
 
-  public static rgba(r: number, g: number, b: number, a: number): Color {
-    return new Color('rgba', r, g, b, a);
+  public static rgba(vector4d: Vector4d): Color {
+    return new Color(vector4d);
   }
 
   public static hex(str: string): Color {
@@ -63,7 +57,7 @@ export class Color {
       throw new Error('Invalid string')
     }
 
-    return new Color("rgba", r, g, b, a)
+    return new Color(new Vector4d(r, g, b, a));
   }
 
   public static IsValidChannel(value: number, isAlpha = false): boolean {

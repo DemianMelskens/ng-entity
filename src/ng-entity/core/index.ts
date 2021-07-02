@@ -1,2 +1,2 @@
 export * from './abstract-component';
-export * from './abstract-entity';
+export * from './entity';
