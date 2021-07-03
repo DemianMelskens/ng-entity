@@ -1,62 +1,69 @@
-import {Component, ComponentEntry} from '../interfaces';
+import {Component} from '../interfaces';
 import {Class} from '../types';
 import {Group} from "./group";
+import {GUI} from "../utils/gui";
+import {ComponentPool} from "./component-pool";
+import {distinct} from "../utils/array.utils";
 
 export class Registry {
   private readonly _entities: number[];
-  private readonly _components: ComponentEntry[];
+  private readonly _components: Map<Class<any>, ComponentPool>;
 
   private constructor() {
     this._entities = [];
-    this._components = [];
+    this._components = new Map<Class<any>, ComponentPool>();
   }
 
   public create(): number {
-    //TODO: create global unique identifier system
-    const entity = -1;
+    const entity = GUI.getInstance().next();
     this._entities.push(entity);
     return entity;
   }
 
   public emplace<T extends Component>(entity: number, clazz: Class<T>, ...args: any[]): T {
     const component = new clazz(args);
-    this._components.push({entity, component});
+    let pool = this._components.get(clazz);
+
+    if (pool) {
+      pool.set(entity, component);
+    } else {
+      pool = new ComponentPool();
+      this._components.set(clazz, pool.set(entity, component));
+    }
+
     return component;
   }
 
   public get<T extends Component>(entity: number, clazz: Class<T>): T | undefined {
-    const entry = this._components.find(entry => (entry.entity === entity && entry.component instanceof clazz));
-    return entry ? entry.component as T : undefined;
+    const pool = this._components.get(clazz);
+
+    if (pool) {
+      return pool.get(entity) as T;
+    }
+
+    return undefined;
   }
 
   public remove<T extends Component>(entity: number, clazz: Class<T>): void {
-    const index = this._components.findIndex(entry => (entry.entity === entity && entry.component instanceof clazz));
-    this._components.splice(index, 1);
-  }
-
-  public group(...clazzes: Class<any>[]): Group {
-    const entities: number[] = [];
-    const components: ComponentEntry[] = [];
-
-    this._entities.forEach(
-      entity => {
-        const entityComponents = this._components.filter(
-          entry => entry.entity === entity && clazzes.some(clazz => entry.component instanceof clazz)
-        );
-
-        if (components.length > 0) {
-          entities.push(entity);
-          components.push(...entityComponents);
-        }
+    const pool = this._components.get(clazz);
+    if (pool) {
+      pool.delete(entity);
+      if (pool.isEmpty()) {
+        this._components.delete(clazz);
       }
-    );
-
-    return new Group(entities, components);
+    }
   }
 
   public has<T extends Component>(clazz: Class<T>, entity: number): boolean {
-    const entry = this.get(entity, clazz);
-    return entry !== undefined;
+    const component = this.get(entity, clazz);
+    return component !== undefined;
+  }
+
+  public group(...clazzes: Class<any>[]): Group {
+    const components = Array.from(this._components.entries()).filter(([key]) => clazzes.includes(key));
+    const entities: number[] = components.flatMap(([_, value]) => value.entities()).filter(distinct);
+
+    return new Group(entities, new Map(components));
   }
 
   public static create(): Registry {

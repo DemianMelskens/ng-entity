@@ -1,3 +1,3 @@
 export interface Updatable {
-  update(deltaTime: number): void;
+  onUpdate(deltaTime: number): void;
 }

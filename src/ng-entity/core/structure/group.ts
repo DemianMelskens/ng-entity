@@ -1,12 +1,12 @@
-import {Component, ComponentEntry} from "../interfaces";
+import {Component} from "../interfaces";
 import {Class} from "../types";
-import {ASSERT} from "../utils";
+import {ComponentPool} from "./component-pool";
 
 export class Group {
   private readonly _entities: number[];
-  private readonly _components: ComponentEntry[];
+  private readonly _components: Map<Class<any>, ComponentPool>;
 
-  public constructor(entities: number[], component: ComponentEntry[]) {
+  public constructor(entities: number[], component: Map<Class<any>, ComponentPool>) {
     this._entities = entities;
     this._components = component;
   }
@@ -15,12 +15,12 @@ export class Group {
     return this._entities;
   }
 
-  public get<T extends Component>(entity: number, clazz: Class<T>): T {
-    ASSERT(this.has(entity, clazz), `Group does not contains component of type: ${clazz.name} for entity: ${entity}`);
-
-    return this._components.find(
-      component => (component.entity === entity && component instanceof clazz)
-    )!.component as T;
+  public get<T extends Component>(entity: number, clazz: Class<T>): T | undefined {
+    const pool = this._components.get(clazz);
+    if (pool) {
+      return pool.get(entity) as T;
+    }
+    return undefined;
   }
 
   public has<T extends Component>(entity: number, clazz: Class<T>): boolean {

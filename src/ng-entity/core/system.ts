@@ -1,5 +1,5 @@
-import {Component} from "./interfaces";
+import {Updatable} from "./interfaces";
 
-export interface System<T extends Component> {
-  
+export interface System extends Updatable {
+
 }
