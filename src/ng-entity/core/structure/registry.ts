@@ -3,25 +3,16 @@ import {Class} from '../types';
 import {Group} from "./group";
 import {GUI} from "../utils/gui";
 import {ComponentPool} from "./component-pool";
-import {distinct} from "../utils/array.utils";
 
 export class Registry {
-  private readonly _entities: number[];
   private readonly _components: Map<Class<any>, ComponentPool>;
 
   private constructor() {
-    this._entities = [];
     this._components = new Map<Class<any>, ComponentPool>();
   }
 
-  public entities(): number[] {
-    return this._entities;
-  }
-
   public create(): number {
-    const entity = GUI.getInstance().next();
-    this._entities.push(entity);
-    return entity;
+    return GUI.getInstance().next();
   }
 
   public emplace<T extends Component>(entity: number, clazz: Class<T>, ...args: any[]): T {
@@ -65,9 +56,7 @@ export class Registry {
 
   public group(...clazzes: Class<any>[]): Group {
     const components = Array.from(this._components.entries()).filter(([key]) => clazzes.includes(key));
-    const entities: number[] = components.flatMap(([_, value]) => value.entities()).filter(distinct);
-
-    return new Group(entities, new Map(components));
+    return new Group(new Map(components));
   }
 
   public static create(): Registry {
