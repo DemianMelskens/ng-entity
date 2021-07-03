@@ -14,6 +14,10 @@ export class Registry {
     this._components = new Map<Class<any>, ComponentPool>();
   }
 
+  public entities(): number[] {
+    return this._entities;
+  }
+
   public create(): number {
     const entity = GUI.getInstance().next();
     this._entities.push(entity);
