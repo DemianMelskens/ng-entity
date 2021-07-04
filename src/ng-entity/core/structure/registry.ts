@@ -1,7 +1,7 @@
 import {Component} from '../interfaces';
 import {Class} from '../types';
 import {Group} from "./group";
-import {GUI} from "../utils/gui";
+import {GUI, Optional} from "../utils/models";
 import {ComponentPool} from "./component-pool";
 
 export class Registry {
@@ -11,47 +11,48 @@ export class Registry {
     this._components = new Map<Class<any>, ComponentPool>();
   }
 
+  public get components(): Map<Class<any>, ComponentPool> {
+    return this._components;
+  }
+
   public create(): number {
     return GUI.getInstance().next();
   }
 
   public emplace<T extends Component>(entity: number, clazz: Class<T>, ...args: any[]): T {
     const component = new clazz(args);
-    let pool = this._components.get(clazz);
+    const optional = Optional.ofNullable(this._components.get(clazz));
 
-    if (pool) {
-      pool.set(entity, component);
-    } else {
-      pool = new ComponentPool();
-      this._components.set(clazz, pool.set(entity, component));
-    }
+    optional.ifPresentOrElse(
+      pool => pool.set(entity, component),
+      () => {
+        const pool = new ComponentPool();
+        this._components.set(clazz, pool.set(entity, component));
+      }
+    );
 
     return component;
   }
 
   public get<T extends Component>(entity: number, clazz: Class<T>): T | undefined {
-    const pool = this._components.get(clazz);
-
-    if (pool) {
-      return pool.get(entity) as T;
-    }
-
-    return undefined;
+    const optional = Optional.ofNullable(this._components.get(clazz));
+    return optional.map(pool => pool.get(entity) as T).orElse(undefined);
   }
 
   public remove<T extends Component>(entity: number, clazz: Class<T>): void {
-    const pool = this._components.get(clazz);
-    if (pool) {
+    const optional = Optional.ofNullable(this._components.get(clazz));
+
+    optional.ifPresent(pool => {
       pool.delete(entity);
       if (pool.isEmpty()) {
         this._components.delete(clazz);
       }
-    }
+    });
   }
 
   public has<T extends Component>(clazz: Class<T>, entity: number): boolean {
-    const component = this.get(entity, clazz);
-    return component !== undefined;
+    const optional = Optional.ofNullable(this.get(entity, clazz));
+    return optional.isPresent();
   }
 
   public group(...clazzes: Class<any>[]): Group {

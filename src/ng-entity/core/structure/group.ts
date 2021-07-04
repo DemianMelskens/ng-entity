@@ -1,7 +1,7 @@
 import {Component} from "../interfaces";
 import {Class} from "../types";
 import {ComponentPool} from "./component-pool";
-import {distinct} from "../utils/array.utils";
+import {distinct} from "../utils/functions/array.utils";
 
 export class Group {
   private readonly _components: Map<Class<any>, ComponentPool>;

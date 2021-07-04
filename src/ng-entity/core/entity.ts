@@ -1,7 +1,7 @@
 import {Class} from './types';
 import {Component} from './interfaces';
 import {Scene} from "./structure";
-import {ASSERT} from "./utils";
+import {assert} from "./utils";
 
 /**
  * this class should not be extended
@@ -17,12 +17,12 @@ export class Entity {
   }
 
   public addComponent<T extends Component>(clazz: Class<T>, ...args: any[]): T {
-    ASSERT(this.hasComponent(clazz), `Entity already has component of type: ${clazz.name}`);
-    return this.scene.registry.emplace(this.id, clazz, args) as T;
+    assert(!this.hasComponent(clazz), `Entity already has component of type: ${clazz.name}`);
+    return this.scene.registry.emplace(this.id, clazz, args);
   }
 
   public getComponent<T extends Component>(clazz: Class<T>): T {
-    ASSERT(this.hasComponent(clazz), `Entity does not have component of type: ${clazz.name}`);
+    assert(!this.hasComponent(clazz), `Entity does not have component of type: ${clazz.name}`);
     return this.scene.registry.get(this.id, clazz) as T;
   }
 
@@ -31,7 +31,6 @@ export class Entity {
   }
 
   public hasComponent<T extends Component>(clazz: Class<T>): boolean {
-    ASSERT(this.hasComponent(clazz), `Entity does not have component of type: ${clazz.name}`);
     return this.scene.registry.has(clazz, this.id);
   }
 }

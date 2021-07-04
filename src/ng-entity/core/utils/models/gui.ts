@@ -1,6 +1,6 @@
 export class GUI {
   private static instance: GUI;
-  public count = 0;
+  public count = 1;
 
   public next(): number {
     return this.count++;
