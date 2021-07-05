@@ -19,8 +19,6 @@ export class AppComponent {
     const player2 = scene.createEntity('player_2');
     // eslint-disable-next-line no-console
     console.log(player2);
-
-    // eslint-disable-next-line no-console
-    console.log(scene.registry.components);
+    scene.registry.log();
   }
 }

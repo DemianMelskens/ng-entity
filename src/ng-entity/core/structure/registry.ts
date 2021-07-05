@@ -1,26 +1,28 @@
 import {Component} from '../interfaces';
 import {Class} from '../types';
 import {Group} from "./group";
-import {GUI, Optional} from "../utils/models";
+import {Optional} from "../utils";
 import {ComponentPool} from "./component-pool";
 
 export class Registry {
+  private count = 0;
   private readonly _components: Map<Class<any>, ComponentPool>;
 
   private constructor() {
     this._components = new Map<Class<any>, ComponentPool>();
   }
 
-  public get components(): Map<Class<any>, ComponentPool> {
-    return this._components;
+  public log() {
+    // eslint-disable-next-line no-console
+    console.log(this._components);
   }
 
   public create(): number {
-    return GUI.getInstance().next();
+    return this.count++;
   }
 
   public emplace<T extends Component>(entity: number, clazz: Class<T>, ...args: any[]): T {
-    const component = new clazz(args);
+    const component = new clazz(...args);
     const optional = Optional.ofNullable(this._components.get(clazz));
 
     optional.ifPresentOrElse(
@@ -50,7 +52,7 @@ export class Registry {
     });
   }
 
-  public has<T extends Component>(clazz: Class<T>, entity: number): boolean {
+  public has<T extends Component>(entity: number, clazz: Class<T>): boolean {
     const optional = Optional.ofNullable(this.get(entity, clazz));
     return optional.isPresent();
   }

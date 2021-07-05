@@ -18,7 +18,7 @@ export class Entity {
 
   public addComponent<T extends Component>(clazz: Class<T>, ...args: any[]): T {
     assert(!this.hasComponent(clazz), `Entity already has component of type: ${clazz.name}`);
-    return this.scene.registry.emplace(this.id, clazz, args);
+    return this.scene.registry.emplace(this.id, clazz, ...args);
   }
 
   public getComponent<T extends Component>(clazz: Class<T>): T {
@@ -31,6 +31,6 @@ export class Entity {
   }
 
   public hasComponent<T extends Component>(clazz: Class<T>): boolean {
-    return this.scene.registry.has(clazz, this.id);
+    return this.scene.registry.has(this.id, clazz);
   }
 }
