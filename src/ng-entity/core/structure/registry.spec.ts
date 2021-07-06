@@ -25,6 +25,24 @@ describe('Registry Tests', () => {
     expect(registry.has(entity, TestComponent)).toBeTruthy();
   });
 
+  it('should emplace components for multiple entities', () => {
+    const entity_2 = registry.create();
+
+    const component_1 = registry.emplace(entity, TestComponent, 'test_1');
+    const component_2 = registry.emplace(entity_2, TestComponent, 'test_2');
+    expect(component_1).toBeTruthy();
+    expect(component_2).toBeTruthy();
+
+    const result_1 = registry.get(entity, TestComponent);
+    const result_2 = registry.get(entity_2, TestComponent);
+
+    expect(result_1).toBeTruthy();
+    expect(result_1!.value).toEqual('test_1');
+
+    expect(result_2).toBeTruthy();
+    expect(result_2!.value).toEqual('test_2');
+  });
+
   it('should get component for entity', () => {
     registry.emplace(entity, TestComponent, 'test');
     const result = registry.get(entity, TestComponent);

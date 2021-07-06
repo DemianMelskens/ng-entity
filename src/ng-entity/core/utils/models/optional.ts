@@ -37,8 +37,9 @@ export class Optional<T> {
   public ifPresentOrElse(consumer: (value: NonNullish<T>) => void, fn: () => void): void {
     if (this._value !== undefined) {
       consumer(this._value as NonNullish<T>);
+    } else {
+      fn();
     }
-    fn();
   }
 
   public isPresent(): boolean {
