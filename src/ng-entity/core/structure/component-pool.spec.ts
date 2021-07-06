@@ -20,14 +20,14 @@ describe('ComponentPool tests', () => {
     pool = new ComponentPool();
     const component = new TestComponent('test');
 
-    pool.set(entity, component);
+    pool.emplace(entity, component);
 
     const result = pool.get(entity);
     expect((result as TestComponent).value).toEqual('test');
   });
 
   it('should remove component for entity', () => {
-    pool.delete(entity);
+    pool.remove(entity);
     const result = pool.get(entity);
     expect(result).toEqual(undefined);
   });

@@ -3,6 +3,7 @@ import {Class} from '../types';
 import {Group} from "./group";
 import {Optional} from "../utils";
 import {ComponentPool} from "./component-pool";
+import {View} from "./view";
 
 export class Registry {
   private count = 0;
@@ -21,10 +22,10 @@ export class Registry {
     const optional = Optional.of(this._components.get(clazz));
 
     optional.ifPresentOrElse(
-      pool => pool.set(entity, component),
+      pool => pool.emplace(entity, component),
       () => {
         const pool = new ComponentPool();
-        this._components.set(clazz, pool.set(entity, component));
+        this._components.set(clazz, pool.emplace(entity, component));
       }
     );
 
@@ -40,7 +41,7 @@ export class Registry {
     const optional = Optional.of(this._components.get(clazz));
 
     optional.ifPresent(pool => {
-      pool.delete(entity);
+      pool.remove(entity);
       if (pool.isEmpty()) {
         this._components.delete(clazz);
       }
@@ -50,6 +51,11 @@ export class Registry {
   public has<T extends Component>(entity: number, clazz: Class<T>): boolean {
     const optional = Optional.of(this.get(entity, clazz));
     return optional.isPresent();
+  }
+
+  public view(clazz: Class<any>): View {
+    const components = Array.from(this._components.entries()).filter(([key]) => clazz === key);
+    return new View(new Map(components));
   }
 
   public group(...clazzes: Class<any>[]): Group {

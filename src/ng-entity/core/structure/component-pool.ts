@@ -15,12 +15,12 @@ export class ComponentPool {
     return this._components.get(entity);
   }
 
-  set(entity: number, component: Component): ComponentPool {
+  emplace(entity: number, component: Component): ComponentPool {
     this._components.set(entity, component);
     return this;
   }
 
-  delete(entity: number): boolean {
+  remove(entity: number): boolean {
     return this._components.delete(entity);
   }
 

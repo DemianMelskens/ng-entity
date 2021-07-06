@@ -1,14 +1,14 @@
-import {Group} from './group';
 import {Component} from '../interfaces';
 import {ComponentPool} from './component-pool';
+import {View} from "./view";
 
-describe('Group tests', () => {
+describe('View tests', () => {
   let entity: number;
-  let group: Group;
+  let view: View;
 
   beforeEach(() => {
     entity = 0;
-    group = new Group(new Map([[
+    view = new View(new Map([[
       TestComponent, new ComponentPool(
         new Map([[
           entity, new TestComponent('test')
@@ -18,16 +18,16 @@ describe('Group tests', () => {
   });
 
   it('should get entities in group', () => {
-    expect(group.entities()).toEqual([0]);
+    expect(view.entities()).toEqual([0]);
   });
 
   it('should get component for entity', () => {
-    const result = group.get(entity, TestComponent);
+    const result = view.get(entity, TestComponent);
     expect(result!.value).toEqual('test');
   });
 
   it('should check if it has a component for entity', () => {
-    expect(group.has(entity, TestComponent)).toEqual(true);
+    expect(view.has(entity, TestComponent)).toEqual(true);
   });
 });
 

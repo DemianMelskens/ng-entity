@@ -1,3 +1,3 @@
 export * from './registry';
-export * from './scene';
 export * from './group';
+export * from './scene';
