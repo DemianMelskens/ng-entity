@@ -12,11 +12,6 @@ export class Registry {
     this._components = new Map<Class<any>, ComponentPool>();
   }
 
-  public log() {
-    // eslint-disable-next-line no-console
-    console.log(this._components);
-  }
-
   public create(): number {
     return this.count++;
   }

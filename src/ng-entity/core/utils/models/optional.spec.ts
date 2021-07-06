@@ -31,7 +31,7 @@ describe('Optional tests', () => {
   });
 
   it('should do function if value is present', () => {
-    const expected = new Expected(10);
+    const expected = new Expected();
     const result_1 = Optional.of(10);
     const result_2 = Optional.empty();
 
@@ -45,7 +45,7 @@ describe('Optional tests', () => {
   });
 
   it('should do function if value is present or else execute backup', () => {
-    const expected = new Expected(10);
+    const expected = new Expected();
     const result_1 = Optional.of(10);
     const result_2 = Optional.empty();
 
@@ -60,15 +60,59 @@ describe('Optional tests', () => {
     expect(expected.check).toHaveBeenCalledTimes(1);
     expect(expected.fallback).toHaveBeenCalledTimes(1);
   });
+
+  it('should map if value is present', () => {
+    const optional_1 = Optional.of(10);
+    const optional_2 = Optional.of(10);
+
+    const result_1 = optional_1.map(value => value + 5);
+    const result_2 = optional_2.map(value => value + 5);
+
+    expect(result_1.isPresent()).toEqual(true);
+    expect(result_1.orElseThrow()).toEqual(15);
+
+    expect(result_2.isPresent()).toEqual(false);
+    expect(result_2.orElse(20)).toEqual(20);
+  });
+
+  it('should should return other value if value is not present', () => {
+    const optional_1 = Optional.of(10);
+    const optional_2 = Optional.empty();
+
+    expect(optional_1.orElse(20)).toEqual(10);
+    expect(optional_2.orElse(20)).toEqual(20);
+  });
+
+  it('should execute function if value is not present', () => {
+    const optional_1 = Optional.of(10);
+    const optional_2 = Optional.empty();
+
+    expect(optional_1.orElseGet(() => 20)).toEqual(10);
+    expect(optional_2.orElseGet(() => 20)).toEqual(20);
+  });
+
+  it('should throw error if value is not present', () => {
+    const optional_1 = Optional.of(10);
+    const optional_2 = Optional.empty();
+
+    expect(optional_1.orElseThrow()).not.toThrow(new Error('value not present!'));
+    expect(optional_1.orElseThrow()).toEqual(10);
+    expect(optional_2.orElseThrow()).toThrow(new Error('value not present!'));
+  });
+
+  it('should throw custom error if value is not present', () => {
+    const optional_1 = Optional.of(10);
+    const optional_2 = Optional.empty();
+    const error = new Error('custom error')
+
+    expect(optional_1.orElseThrow(error)).not.toThrow(error);
+    expect(optional_1.orElseThrow(error)).toEqual(10);
+    expect(optional_2.orElseThrow(error)).toThrow(error);
+  });
 });
 
 class Expected {
-
-  constructor(private expected: any) {
-  }
-
   public check(value: any): void {
-    expect(value).toEqual(this.expected);
   }
 
   public fallback(): void {
