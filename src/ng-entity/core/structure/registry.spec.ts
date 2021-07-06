@@ -1,7 +1,7 @@
 import {Registry} from "./registry";
 import {Component} from "../interfaces";
 
-describe('Registry Tests', () => {
+describe('Registry tests', () => {
   let registry: Registry;
   let entity: number;
 

@@ -23,7 +23,7 @@ export class Registry {
 
   public emplace<T extends Component>(entity: number, clazz: Class<T>, ...args: any[]): T {
     const component = new clazz(...args);
-    const optional = Optional.ofNullable(this._components.get(clazz));
+    const optional = Optional.of(this._components.get(clazz));
 
     optional.ifPresentOrElse(
       pool => pool.set(entity, component),
@@ -37,12 +37,12 @@ export class Registry {
   }
 
   public get<T extends Component>(entity: number, clazz: Class<T>): T | undefined {
-    const optional = Optional.ofNullable(this._components.get(clazz));
+    const optional = Optional.of(this._components.get(clazz));
     return optional.map(pool => pool.get(entity) as T).orElse(undefined);
   }
 
   public remove<T extends Component>(entity: number, clazz: Class<T>): void {
-    const optional = Optional.ofNullable(this._components.get(clazz));
+    const optional = Optional.of(this._components.get(clazz));
 
     optional.ifPresent(pool => {
       pool.delete(entity);
@@ -53,7 +53,7 @@ export class Registry {
   }
 
   public has<T extends Component>(entity: number, clazz: Class<T>): boolean {
-    const optional = Optional.ofNullable(this.get(entity, clazz));
+    const optional = Optional.of(this.get(entity, clazz));
     return optional.isPresent();
   }
 

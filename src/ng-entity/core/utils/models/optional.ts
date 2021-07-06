@@ -5,11 +5,7 @@ export class Optional<T> {
   constructor(private _value: T | undefined) {
   }
 
-  public static of<R>(value: NonNullish<R>): Optional<R> {
-    return new Optional(value);
-  }
-
-  public static ofNullable<R>(value: R | undefined): Optional<R | undefined> {
+  public static of<R>(value: R): Optional<R> {
     return new Optional(value);
   }
 
@@ -53,21 +49,21 @@ export class Optional<T> {
     return Optional.empty();
   }
 
-  public orElse(value: T): T {
+  public orElse<R>(value: R): T | R {
     if (this._value === undefined) {
       return value;
     }
     return this._value;
   }
 
-  public orElseGet(supplier: () => T): T {
+  public orElseGet<R>(supplier: () => R): T | R {
     if (this._value === undefined) {
       return supplier();
     }
     return this._value;
   }
 
-  public orElseThrow(error: Error): T {
+  public orElseThrow(error: Error = new Error('value not present!')): T {
     if (this._value === undefined) {
       throw error;
     }
