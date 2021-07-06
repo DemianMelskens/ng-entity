@@ -25,7 +25,7 @@ export class ComponentPool {
   }
 
   isEmpty(): boolean {
-    return this._components.size > 0;
+    return this._components.size <= 0;
   }
 }
 

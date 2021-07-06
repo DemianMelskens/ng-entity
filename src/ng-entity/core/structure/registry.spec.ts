@@ -87,7 +87,7 @@ describe('Registry tests', () => {
 
     const result = registry.group(TestComponent);
 
-    expect(result.entities).toContain(entity);
+    expect(result.entities()).toContain(entity);
     expect(result.has(entity, TestComponent)).toEqual(true);
   });
 

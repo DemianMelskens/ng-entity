@@ -1,7 +1,7 @@
 import {Component} from "../interfaces";
 import {Class} from "../types";
 import {ComponentPool} from "./component-pool";
-import {distinct} from "../utils/functions/array.utils";
+import {distinct} from "../utils";
 
 export class Group {
   private readonly _components: Map<Class<any>, ComponentPool>;
@@ -10,7 +10,7 @@ export class Group {
     this._components = component;
   }
 
-  public get entities(): number[] {
+  public entities(): number[] {
     return Array.from(this._components.entries()).flatMap(([_, value]) => value.entities()).filter(distinct);
   }
 

@@ -63,7 +63,7 @@ describe('Optional tests', () => {
 
   it('should map if value is present', () => {
     const optional_1 = Optional.of(10);
-    const optional_2 = Optional.of(10);
+    const optional_2 = Optional.empty();
 
     const result_1 = optional_1.map(value => value + 5);
     const result_2 = optional_2.map(value => value + 5);
@@ -95,9 +95,9 @@ describe('Optional tests', () => {
     const optional_1 = Optional.of(10);
     const optional_2 = Optional.empty();
 
-    expect(optional_1.orElseThrow()).not.toThrow(new Error('value not present!'));
     expect(optional_1.orElseThrow()).toEqual(10);
-    expect(optional_2.orElseThrow()).toThrow(new Error('value not present!'));
+    expect(() => optional_1.orElseThrow()).not.toThrow(new Error('value not present!'));
+    expect(() => optional_2.orElseThrow()).toThrow(new Error('value not present!'));
   });
 
   it('should throw custom error if value is not present', () => {
@@ -105,9 +105,9 @@ describe('Optional tests', () => {
     const optional_2 = Optional.empty();
     const error = new Error('custom error')
 
-    expect(optional_1.orElseThrow(error)).not.toThrow(error);
     expect(optional_1.orElseThrow(error)).toEqual(10);
-    expect(optional_2.orElseThrow(error)).toThrow(error);
+    expect(() => optional_1.orElseThrow(error)).not.toThrow(error);
+    expect(() => optional_2.orElseThrow(error)).toThrow(error);
   });
 });
 
