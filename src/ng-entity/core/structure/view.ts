@@ -10,7 +10,7 @@ export class View implements Iterable<number> {
   ) {
   }
 
-  public entities(): number[] {
+  private entities(): number[] {
     return Array.from(this._components.entries()).flatMap(([_, value]) => value.entities()).filter(distinct);
   }
 

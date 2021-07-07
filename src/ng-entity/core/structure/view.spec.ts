@@ -17,10 +17,6 @@ describe('View tests', () => {
     ]]));
   });
 
-  it('should get entities in group', () => {
-    expect(view.entities()).toEqual([0]);
-  });
-
   it('should get component for entity', () => {
     const result = view.get(entity, TestComponent);
     expect(result!.value).toEqual('test');
@@ -28,6 +24,12 @@ describe('View tests', () => {
 
   it('should check if it has a component for entity', () => {
     expect(view.has(entity, TestComponent)).toEqual(true);
+  });
+
+  it('should iterate through all entities', () => {
+    const iterator = view[Symbol.iterator]();
+    expect(iterator.next()).toEqual({value: 0, done: false});
+    expect(iterator.next()).toEqual({value: undefined, done: true});
   });
 });
 
