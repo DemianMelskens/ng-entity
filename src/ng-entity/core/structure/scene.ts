@@ -24,9 +24,8 @@ export class Scene implements Updatable {
   public onUpdate(deltaTime: number): void {
     const group = this.registry.group(TransformComponent, ColorComponent);
 
-    for (const entity of group.entities()) {
+    for (const entity of group) {
       const transform = group.get(entity, TransformComponent);
-      const color = group.get(entity, ColorComponent);
     }
   }
 }

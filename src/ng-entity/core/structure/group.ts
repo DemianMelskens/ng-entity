@@ -3,14 +3,14 @@ import {Class} from "../types";
 import {ComponentPool} from "./component-pool";
 import {distinct} from "../utils";
 
-export class Group {
+export class Group implements Iterable<number> {
 
   public constructor(
     private readonly _components: Map<Class<any>, ComponentPool>
   ) {
   }
 
-  public entities(): number[] {
+  private entities(): number[] {
     return Array.from(this._components.entries()).flatMap(([_, value]) => value.entities()).filter(distinct);
   }
 
@@ -32,5 +32,19 @@ export class Group {
       const entry = this.get(entity, clazz);
       return entry !== undefined;
     });
+  }
+
+  [Symbol.iterator](): Iterator<number> {
+    const entities = this.entities();
+    let step = 0;
+
+    return {
+      next(): number | any | undefined {
+        if (step < entities.length) {
+          return {value: entities[step++], done: false};
+        }
+        return {value: undefined, done: true};
+      }
+    };
   }
 }
