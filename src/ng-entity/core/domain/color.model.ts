@@ -42,22 +42,19 @@ export class Color {
     return new Color(vector4d);
   }
 
-  public static hex(str: string): Color {
-    const arr = str
-      .replace(new RegExp(/\(|\)|[A-Za-z]/g), '')
-      .split(',')
+  public static hex(str: string, alpha?: number): Color {
+    const values = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(str);
+    const vector = values ? new Vector4d(
+      parseInt(values[1], 16),
+      parseInt(values[2], 16),
+      parseInt(values[3], 16),
+      alpha ?? 1
+    ) : null;
 
-    const
-      r = Number(arr[0]),
-      g = Number(arr[1]),
-      b = Number(arr[2]),
-      a = Number(arr[3])
-
-    if (isNaN(r) || isNaN(g) || isNaN(b) || isNaN(a)) {
-      throw new Error('Invalid string')
+    if (vector) {
+      return new Color(vector);
     }
-
-    return new Color(new Vector4d(r, g, b, a));
+    throw new Error('Invalid string');
   }
 
   public static IsValidChannel(value: number, isAlpha = false): boolean {

@@ -2,7 +2,6 @@ import {Entity} from "../entity";
 import {Registry} from "./registry";
 import {TransformComponent} from "../../components/transform.component";
 import {TagComponent} from "../../components/tag.component";
-import {ColorComponent} from "../../components/color.component";
 import {Updatable} from "../interfaces";
 
 export class Scene implements Updatable {
@@ -22,10 +21,6 @@ export class Scene implements Updatable {
   }
 
   public onUpdate(deltaTime: number): void {
-    const group = this.registry.group(TransformComponent, ColorComponent);
-
-    for (const entity of group) {
-      const transform = group.get(entity, TransformComponent);
-    }
+    throw new Error('Not implemented!');
   }
 }

@@ -1,7 +1,7 @@
 import {Component} from "../interfaces";
 import {Class} from "../types";
 import {ComponentPool} from "./component-pool";
-import {distinct} from "../utils";
+import {distinct, Optional} from "../utils";
 
 export class Group implements Iterable<number> {
 
@@ -14,30 +14,26 @@ export class Group implements Iterable<number> {
     return Array.from(this._components.entries()).flatMap(([_, value]) => value.entities()).filter(distinct);
   }
 
-  public get<T, R>(entity: number, clazz1: Class<T>, clazz2?: Class<R>): [T, R] {
-    const clazzes: Class<any>[] = [clazz1, clazz2].filter(clazz => clazz !== undefined) as Class<any>[];
-
-    const components: Component[] = clazzes.map(clazz => {
-      const pool = this._components.get(clazz);
-      if (pool) {
-        const component = pool.get(entity);
-        if (component) {
-          return component;
-        }
-        throw new Error(`Component of type: ${clazz} not found for entity: ${entity}!`);
+  private getComponents(entity: number, ...classes: (Class<any> | undefined)[]): (Component | undefined)[] {
+    return classes.map(clazz => {
+      if (clazz !== undefined) {
+        const optional = Optional.of(this._components.get(clazz));
+        return optional.map(pool => pool.get(entity)).orElse(undefined);
+      } else {
+        return undefined;
       }
-      throw new Error(`Component of type: ${clazz} not found for entity: ${entity}!`);
     })
-
-
-    return [components[0] as T, components[1] as R];
   }
 
-  public has<T extends Component>(entity: number, ...clazzes: Class<any>[]): boolean {
-    return clazzes.every(clazz => {
-      const entry = this.get(entity, clazz);
-      return entry !== undefined;
-    });
+  public get<T, R, W, Q, P>(entity: number, clazz1: Class<T>, clazz2?: Class<R>, clazz3?: Class<W>, clazz4?: Class<Q>, clazz5?: Class<P>)
+    : [T | undefined, R | undefined, W | undefined, Q | undefined, P | undefined] {
+    const components = this.getComponents(entity, clazz1, clazz2, clazz3, clazz4, clazz5);
+    return [components[0] as T, components[1] as R, components[2] as W, components[3] as Q, components[4] as P];
+  }
+
+  public has<T extends Component>(entity: number, ...classes: Class<any>[]): boolean {
+    const components = this.getComponents(entity, ...classes);
+    return components.every(component => component !== undefined);
   }
 
   [Symbol.iterator](): Iterator<number> {

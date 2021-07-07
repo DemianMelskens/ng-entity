@@ -3,7 +3,6 @@ import {Class} from '../types';
 import {Group} from "./group";
 import {Optional} from "../utils";
 import {ComponentPool} from "./component-pool";
-import {View} from "./view";
 
 export class Registry {
   private count = 0;
@@ -53,13 +52,8 @@ export class Registry {
     return optional.isPresent();
   }
 
-  public view(clazz: Class<any>): View {
-    const components = Array.from(this._components.entries()).filter(([key]) => clazz === key);
-    return new View(new Map(components));
-  }
-
-  public group(...clazzes: Class<any>[]): Group {
-    const components = Array.from(this._components.entries()).filter(([key]) => clazzes.includes(key));
+  public group(...classes: Class<any>[]): Group {
+    const components = Array.from(this._components.entries()).filter(([key]) => classes.includes(key));
     return new Group(new Map(components));
   }
 
