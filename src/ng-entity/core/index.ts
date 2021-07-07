@@ -1,2 +1,4 @@
-export * from './abstract-component';
 export * from './entity';
+export * from './registry';
+export * from './group';
+export * from './scene';

@@ -1,4 +1,4 @@
-import {Vector3d} from '../core/domain';
+import {Vector3d} from '../core/classes';
 import {Component} from "../core/interfaces";
 
 export class TransformComponent implements Component {

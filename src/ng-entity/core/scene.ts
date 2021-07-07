@@ -1,8 +1,8 @@
-import {Entity} from "../entity";
+import {Entity} from "./entity";
 import {Registry} from "./registry";
-import {TransformComponent} from "../../components/transform.component";
-import {TagComponent} from "../../components/tag.component";
-import {Updatable} from "../interfaces";
+import {TransformComponent} from "../components/transform.component";
+import {TagComponent} from "../components/tag.component";
+import {Updatable} from "./interfaces";
 
 export class Scene implements Updatable {
   registry: Registry;

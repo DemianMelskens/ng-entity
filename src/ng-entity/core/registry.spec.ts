@@ -1,5 +1,5 @@
 import {Registry} from "./registry";
-import {Component} from "../interfaces";
+import {Component} from "./interfaces";
 
 describe('Registry tests', () => {
   let registry: Registry;

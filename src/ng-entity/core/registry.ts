@@ -1,7 +1,7 @@
-import {Component} from '../interfaces';
-import {Class} from '../types';
+import {Component} from './interfaces';
+import {Class} from './types';
 import {Group} from "./group";
-import {Optional} from "../utils";
+import {Optional} from "./utils";
 import {ComponentPool} from "./component-pool";
 
 export class Registry {

@@ -1,5 +1,5 @@
 import {ComponentPool} from './component-pool';
-import {Component} from '../interfaces';
+import {Component} from './interfaces';
 
 describe('ComponentPool tests', () => {
   let entity = 0;

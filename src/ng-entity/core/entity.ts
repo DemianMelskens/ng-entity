@@ -1,7 +1,7 @@
 import {Class} from './types';
 import {Component} from './interfaces';
-import {Scene} from "./structure";
 import {assert} from "./utils";
+import {Scene} from "./scene";
 
 /**
  * this class should not be extended
