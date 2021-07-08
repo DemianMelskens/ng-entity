@@ -22,7 +22,7 @@ export class Entity {
   }
 
   public getComponent<T extends Component>(clazz: Class<T>): T {
-    assert(!this.hasComponent(clazz), `Entity does not have component of type: ${clazz.name}`);
+    assert(this.hasComponent(clazz), `Entity does not have component of type: ${clazz.name}`);
     return this.scene.registry.get(this.id, clazz) as T;
   }
 
