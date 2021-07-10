@@ -1,5 +1,5 @@
 import {Scene} from './scene';
-import {TagComponent} from '../components/tag.component';
+import {TagComponent} from '../components';
 
 describe('Scene tests', () => {
   let scene: Scene;
