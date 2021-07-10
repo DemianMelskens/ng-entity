@@ -1,6 +1,5 @@
-import {Vector4d} from "../vector/vector4d.model";
-import {ColorType} from "../../types";
-import {Vector3d} from "../vector/vector3d.model";
+import {Vector3d, Vector4d} from "../vector";
+import {ColorType} from "./color-type";
 
 export class Color {
   private _vector4d: Vector4d;
