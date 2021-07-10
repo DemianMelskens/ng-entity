@@ -1,7 +1,8 @@
-import {Component} from "./interfaces";
-import {Class} from "./types";
+import {Class} from "../../shared/types";
 import {ComponentPool} from "./component-pool";
-import {distinct, Optional} from "./utils";
+import {distinct} from "../../shared/utils";
+import {Component} from "../scene";
+import {Optional} from "../../shared/domain/optional";
 
 export class Group implements Iterable<number> {
 

@@ -1,6 +1,6 @@
-import {Class} from './types';
-import {Component} from './interfaces';
-import {assert} from "./utils";
+import {Class} from '../../shared/types';
+import {Component} from './component';
+import {assert} from "../../shared/utils";
 import {Scene} from "./scene";
 
 /**

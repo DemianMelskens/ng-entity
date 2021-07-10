@@ -1,5 +1,5 @@
-import {Vector3d} from '../core/classes';
-import {Component} from "../core/interfaces";
+import {Vector3d} from '../../shared/domain/vector';
+import {Component} from "../scene";
 
 export class TransformComponent implements Component {
 

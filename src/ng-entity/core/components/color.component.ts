@@ -1,5 +1,5 @@
-import {Color} from "../core/classes";
-import {Component} from "../core/interfaces";
+import {Component} from "../scene";
+import {Color} from "../../shared/domain/color";
 
 export class ColorComponent implements Component {
 

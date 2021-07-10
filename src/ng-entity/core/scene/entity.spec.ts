@@ -1,6 +1,6 @@
 import {Scene} from './scene';
 import {Entity} from './entity';
-import {Component} from './interfaces';
+import {Component} from './component';
 import {TagComponent} from '../components/tag.component';
 
 describe('Entity tests', () => {

@@ -1,4 +1,4 @@
-import {Component} from "../core/interfaces";
+import {Component} from "../scene";
 
 export class TagComponent implements Component {
 

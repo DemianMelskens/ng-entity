@@ -1,4 +1,4 @@
-import {Component} from './interfaces';
+import {Component} from "../scene";
 import {ComponentPool} from './component-pool';
 import {Group} from './group';
 

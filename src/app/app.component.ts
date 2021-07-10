@@ -1,9 +1,7 @@
 import {Component} from '@angular/core';
-import {Scene} from '../ng-entity/core';
-import {TagComponent} from "../ng-entity/components/tag.component";
-import {TransformComponent} from "../ng-entity/components/transform.component";
-import {ColorComponent} from "../ng-entity/components/color.component";
-import {Color} from "../ng-entity/core/classes";
+import {ColorComponent, TagComponent, TransformComponent} from "../ng-entity/core/components";
+import {Scene} from "../ng-entity/core/scene";
+import {Color} from "../ng-entity/shared/domain/color";
 
 @Component({
   selector: 'app-root',

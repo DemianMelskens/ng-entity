@@ -1,4 +1,4 @@
-import {Component} from "./interfaces";
+import {Component} from "../scene";
 
 export class ComponentPool {
 

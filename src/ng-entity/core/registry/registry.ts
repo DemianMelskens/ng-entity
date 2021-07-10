@@ -1,8 +1,8 @@
-import {Component} from './interfaces';
-import {Class} from './types';
+import {Class} from '../../shared/types';
 import {Group} from "./group";
-import {Optional} from "./utils";
 import {ComponentPool} from "./component-pool";
+import {Component} from "../scene";
+import {Optional} from "../../shared/domain/optional";
 
 export class Registry {
   private count = 0;

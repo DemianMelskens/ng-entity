@@ -1,4 +1,3 @@
-export * from './entity';
+export * from './component-pool';
 export * from './registry';
 export * from './group';
-export * from './scene';
