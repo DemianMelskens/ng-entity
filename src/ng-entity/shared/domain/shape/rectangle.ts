@@ -9,6 +9,25 @@ export class Rectangle implements Shape {
   ) {
   }
 
-  draw(transform: Transform, color: Color): void {
+  draw(context: CanvasRenderingContext2D, transform: Transform, fill?: Color, stroke?: Color): void {
+    if (fill) {
+      context.fillStyle = fill.toString('rgba');
+      context.fillRect(
+        transform.position.x,
+        transform.position.y,
+        this.width,
+        this.height
+      );
+    }
+
+    if (stroke) {
+      context.strokeStyle = stroke.toString('rgba');
+      context.strokeRect(
+        transform.position.x,
+        transform.position.y,
+        this.width,
+        this.height
+      );
+    }
   }
 }
