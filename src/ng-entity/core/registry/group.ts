@@ -19,7 +19,7 @@ export class Group implements Iterable<number> {
     return classes.map(clazz => {
       if (clazz !== undefined) {
         const optional = Optional.of(this._components.get(clazz));
-        return optional.map(pool => pool.get(entity)).orElse(undefined);
+        return optional.map(pool => pool.get(entity)).orElseThrow(new Error(`Entity: ${entity} does not have component of type: ${clazz.name}`));
       } else {
         return undefined;
       }

@@ -8,7 +8,7 @@ describe('Entity tests', () => {
   let entity: Entity;
 
   beforeEach(() => {
-    scene = new Scene();
+    scene = Scene.build();
     entity = scene.createEntity('Test');
   });
 

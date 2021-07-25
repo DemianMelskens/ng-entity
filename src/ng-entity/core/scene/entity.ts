@@ -8,8 +8,8 @@ import {Scene} from "./scene";
  * it is simple a shell of functions to add components easier
  */
 export class Entity {
-  public id: number;
-  public scene: Scene;
+  public readonly id: number;
+  public readonly scene: Scene;
 
   public constructor(id: number, scene: Scene) {
     this.id = id;
@@ -17,12 +17,12 @@ export class Entity {
   }
 
   public addComponent<T extends Component>(clazz: Class<T>, ...args: any[]): T {
-    assert(!this.hasComponent(clazz), `Entity already has component of type: ${clazz.name}`);
+    assert(!this.hasComponent(clazz), `Entity: ${this.id} already has component of type: ${clazz.name}`);
     return this.scene.registry.emplace(this.id, clazz, ...args);
   }
 
   public getComponent<T extends Component>(clazz: Class<T>): T {
-    assert(this.hasComponent(clazz), `Entity does not have component of type: ${clazz.name}`);
+    assert(this.hasComponent(clazz), `Entity: ${this.id} does not have component of type: ${clazz.name}`);
     return this.scene.registry.get(this.id, clazz) as T;
   }
 

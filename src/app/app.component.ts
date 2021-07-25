@@ -1,41 +1,60 @@
-import {Component} from '@angular/core';
-import {ColorComponent, TagComponent, TransformComponent} from "../ng-entity/core/components";
+import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
+import {ColorComponent, TransformComponent} from "../ng-entity/core/components";
 import {Scene} from "../ng-entity/core/scene";
 import {Color} from "../ng-entity/shared/domain/color";
+import {Renderer2d} from "../ng-entity/core/systems/renderer/renderer2d";
+import {ShapeComponent} from "../ng-entity/core/components/shape.component";
+import {Rectangle} from "../ng-entity/shared/domain/shape/rectangle";
+import {Circle} from "../ng-entity/shared/domain/shape/circle";
+import {Canvas} from "../ng-entity/shared/domain/canvas";
+import {UserInput} from "../ng-entity/core/systems/input/UserInput";
+import {InputComponent} from "../ng-entity/core/components/input.component";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
+  private _lastTimestamp: number = Date.now();
   title = 'ECS';
+  scene: Scene = Scene.build();
+  @ViewChild('canvas') canvasElement?: ElementRef<HTMLCanvasElement>;
 
   constructor() {
-    const scene = new Scene();
+  }
 
-    const player1 = scene.createEntity('player_1');
+  ngAfterViewInit(): void {
+    const canvas = new Canvas(this.canvasElement!.nativeElement);
+    this.scene.addSystem(Renderer2d, canvas.getContext('2d'));
+    this.scene.addSystem(UserInput);
+
+    const player1 = this.scene.createEntity('player_1');
     player1.addComponent(ColorComponent, Color.hex('#00ffff'));
-    // eslint-disable-next-line no-console
-    console.log(player1);
+    player1.addComponent(ShapeComponent, new Rectangle(100, 100));
+    player1.getComponent(TransformComponent).transform.position = {x: 200, y: 200, z: 0};
+    player1.addComponent(InputComponent);
 
-    const player2 = scene.createEntity('player_2');
+    const player2 = this.scene.createEntity('player_2');
     player2.addComponent(ColorComponent, Color.hex('#ffff00'));
-    // eslint-disable-next-line no-console
-    console.log(player2);
+    player2.addComponent(ShapeComponent, new Circle(50));
+    player2.getComponent(TransformComponent).transform.position = {x: 200, y: 200, z: 0};
+    player2.addComponent(InputComponent);
 
-    const group = scene.registry.group(TransformComponent, TagComponent, ColorComponent);
+    // this.scene.onUpdate(0);
+    this.loop();
+  }
 
-    for (const entity of group) {
-      if (group.has(entity, TransformComponent, TagComponent, ColorComponent)) {
-        const [transform, tag] = group.get(entity, TransformComponent, TagComponent);
-        // eslint-disable-next-line no-console
-        console.log(transform, tag);
+  private loop(): void {
+    const deltaTime = (Date.now() - this._lastTimestamp) / 1000
+    this.scene.onUpdate(deltaTime);
 
-        const [transform1, tag1, color1] = group.get(entity, TransformComponent, TagComponent, ColorComponent);
-        // eslint-disable-next-line no-console
-        console.log(transform1, tag1, color1);
-      }
-    }
+    window.requestAnimationFrame(() => {
+      // set initial timestamp
+      this._lastTimestamp = Date.now()
+
+      // start update loop
+      this.loop()
+    })
   }
 }

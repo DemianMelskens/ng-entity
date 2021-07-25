@@ -6,7 +6,7 @@ describe('Registry tests', () => {
   let entity: number;
 
   beforeEach(() => {
-    registry = Registry.create();
+    registry = Registry.build();
     entity = registry.create();
   });
 
@@ -91,7 +91,7 @@ describe('Registry tests', () => {
   });
 
   it('should create a registry', () => {
-    const result = Registry.create();
+    const result = Registry.build();
     expect(result).toBeTruthy();
   });
 });

@@ -54,10 +54,11 @@ export class Registry {
 
   public group(...classes: Class<any>[]): Group {
     const components = Array.from(this._components.entries()).filter(([key]) => classes.includes(key));
+    // TODO: make sure that only entities are returned that contain all requested components
     return new Group(new Map(components));
   }
 
-  public static create(): Registry {
+  public static build(): Registry {
     return new Registry()
   }
 }
