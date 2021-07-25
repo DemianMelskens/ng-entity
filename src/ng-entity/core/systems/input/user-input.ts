@@ -1,11 +1,8 @@
 import {System} from "../../scene/system";
 import {Registry} from "../../registry";
-import {TransformComponent} from "../../components";
-import {InputComponent} from "../../components/input.component";
+import {InputComponent, ShapeComponent, SpeedComponent, TransformComponent} from "../../components";
 import {Input} from "../../../shared/domain/input/input";
-import {ShapeComponent} from "../../components/shape.component";
-import {Rectangle} from "../../../shared/domain/shape/rectangle";
-import {Circle} from "../../../shared/domain/shape/circle";
+import {Circle, Rectangle} from "../../../shared/domain/shape";
 
 export class UserInput implements System {
   readonly registry: Registry;
@@ -17,25 +14,25 @@ export class UserInput implements System {
   }
 
   onUpdate(deltaTime: number): void {
-    const group = this.registry.group(TransformComponent, ShapeComponent, InputComponent);
+    const group = this.registry.group(TransformComponent, ShapeComponent, SpeedComponent, InputComponent);
 
     for (const entity of group) {
-      const [transform, shape] = group.get(entity, TransformComponent, ShapeComponent, InputComponent);
+      const [transform, shape, speed] = group.get(entity, TransformComponent, ShapeComponent, SpeedComponent, InputComponent);
 
       if (this.input.isKeyPressed('w')) {
-        transform!.transform.position.y--;
+        transform!.transform.position.y -= speed!.speed!.y;
       }
 
       if (this.input.isKeyPressed('s')) {
-        transform!.transform.position.y++;
+        transform!.transform.position.y += speed!.speed!.y;
       }
 
       if (this.input.isKeyPressed('a')) {
-        transform!.transform.position.x--;
+        transform!.transform.position.x -= speed!.speed!.x;
       }
 
       if (this.input.isKeyPressed('d')) {
-        transform!.transform.position.x++;
+        transform!.transform.position.x += speed!.speed!.x;
       }
 
       if (this.input.isKeyPressed('=')) {

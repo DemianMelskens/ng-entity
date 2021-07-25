@@ -1,5 +1,4 @@
 import {Vector3d, Vector4d} from "../vector";
-import {ColorType} from "./color-type";
 
 export class Color {
   private _vector4d: Vector4d;
@@ -17,20 +16,15 @@ export class Color {
       throw new Error('Provided incorrect value for Green channel')
     }
 
-    if (vector4d.w !== undefined && !Color.IsValidChannel(vector4d.w, true)) {
+    if (vector4d.w && !Color.IsValidChannel(vector4d.w, true)) {
       throw new Error('Provided incorrect value for Alpha channel')
     }
 
     this._vector4d = vector4d;
   }
 
-  public toString(type: ColorType) {
-    switch (type) {
-      case "rgb":
-        return `rgb(${this._vector4d.x}, ${this._vector4d.y}, ${this._vector4d.z})`;
-      case "rgba":
-        return `rgba(${this._vector4d.x}, ${this._vector4d.y}, ${this._vector4d.z}, ${this._vector4d.w})`;
-    }
+  public toString() {
+    return `rgba(${this._vector4d.x}, ${this._vector4d.y}, ${this._vector4d.z}, ${this._vector4d.w})`;
   }
 
   public static rgb(vector3d: Vector3d): Color {

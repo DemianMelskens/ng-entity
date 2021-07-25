@@ -1,2 +1,2 @@
-export * from './color.model';
-export * from './color-type';
+export * from './color';
+export * from './stroke';
