@@ -41,6 +41,18 @@ export class AppComponent implements AfterViewInit {
     player2.getComponent(TransformComponent).transform.position = {x: 200, y: 200, z: 0};
     player2.addComponent(InputComponent);
 
+    const player3 = this.scene.createEntity('player_3');
+    player3.addComponent(ColorComponent, Color.hex('#ff0000'));
+    player3.addComponent(ShapeComponent, new Circle(25));
+    player3.getComponent(TransformComponent).transform.position = {x: 400, y: 200, z: 0};
+    player3.addComponent(InputComponent);
+
+    const player4 = this.scene.createEntity('player_4');
+    player4.addComponent(ColorComponent, Color.hex('#6a00ff'));
+    player4.addComponent(ShapeComponent, new Rectangle(200, 200));
+    player4.getComponent(TransformComponent).transform.position = {x: 600, y: 200, z: 0};
+    player4.addComponent(InputComponent);
+
     // this.scene.onUpdate(0);
     this.loop();
   }
