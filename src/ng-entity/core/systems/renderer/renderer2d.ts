@@ -17,7 +17,7 @@ export class Renderer2d implements System {
 
     for (const entity of group) {
       const [transform, shape] = group.get(entity, TransformComponent, ShapeComponent);
-      shape!.shape.draw(this.context, transform!.transform, shape!.fill, shape!.stroke);
+      shape!.shape.draw(this.context, transform!.transform);
     }
   }
 }

@@ -5,12 +5,14 @@ import {Color} from "../color";
 export class Circle implements Shape {
   constructor(
     public radius: number,
+    public fill?: Color,
+    public stroke?: Color
   ) {
   }
 
-  draw(context: CanvasRenderingContext2D, transform: Transform, fill?: Color, stroke?: Color): void {
-    if (fill) {
-      context.fillStyle = fill.toString('rgba');
+  draw(context: CanvasRenderingContext2D, transform: Transform): void {
+    if (this.fill) {
+      context.fillStyle = this.fill.toString('rgba');
       context.beginPath();
       context.arc(
         transform.position.x,
@@ -23,8 +25,8 @@ export class Circle implements Shape {
       context.fill();
     }
 
-    if (stroke) {
-      context.strokeStyle = stroke.toString('rgba');
+    if (this.stroke) {
+      context.strokeStyle = this.stroke.toString('rgba');
       context.beginPath();
       context.arc(
         transform.position.x,

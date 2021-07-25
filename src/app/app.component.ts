@@ -26,22 +26,22 @@ export class AppComponent implements AfterViewInit {
     this.scene.addSystem(UserInput);
 
     const player1 = this.scene.createEntity('player_1');
-    player1.addComponent(ShapeComponent, new Rectangle(100, 100), Color.hex('#00ffff'));
+    player1.addComponent(ShapeComponent, new Rectangle(100, 100, Color.hex('#00ffff')));
     player1.getComponent(TransformComponent).transform.position = {x: 200, y: 200, z: 0};
     player1.addComponent(InputComponent);
 
     const player2 = this.scene.createEntity('player_2');
-    player2.addComponent(ShapeComponent, new Circle(50), Color.hex('#ffff00'), Color.hex('#000000'));
+    player2.addComponent(ShapeComponent, new Circle(50, Color.hex('#ffff00'), Color.hex('#000000')));
     player2.getComponent(TransformComponent).transform.position = {x: 200, y: 200, z: 0};
     player2.addComponent(InputComponent);
 
     const player3 = this.scene.createEntity('player_3');
-    player3.addComponent(ShapeComponent, new Circle(25), Color.hex('#ff0000'));
+    player3.addComponent(ShapeComponent, new Circle(25, Color.hex('#ff0000')));
     player3.getComponent(TransformComponent).transform.position = {x: 400, y: 200, z: 0};
     player3.addComponent(InputComponent);
 
     const player4 = this.scene.createEntity('player_4');
-    player4.addComponent(ShapeComponent, new Rectangle(200, 200), Color.hex('#6a00ff'));
+    player4.addComponent(ShapeComponent, new Rectangle(200, 200, Color.hex('#6a00ff')));
     player4.getComponent(TransformComponent).transform.position = {x: 600, y: 200, z: 0};
     player4.addComponent(InputComponent);
 
