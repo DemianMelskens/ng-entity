@@ -1,0 +1,35 @@
+export type Variant =
+  'normal' |
+  'none' |
+  'historical-forms' |
+  'small-caps' |
+  'all-small-caps' |
+  'petite-caps' |
+  'all-petite-caps' |
+  'unicase' |
+  'titling-caps' |
+  'ordinal' |
+  'slashed-zero' |
+  'ruby' |
+  'common-ligatures' |
+  'no-common-ligatures' |
+  'discretionary-ligatures' |
+  'no-discretionary-ligatures' |
+  'historical-ligatures' |
+  'no-historical-ligatures' |
+  'contextual' |
+  'no-contextual' |
+  'lining-nums' |
+  'oldstyle-nums' |
+  'jis78' |
+  'jis83' |
+  'jis90' |
+  'jis04' |
+  'simplified' |
+  'traditional' |
+  'full-width' |
+  'proportional-width' |
+  'proportional-nums' |
+  'tabular-nums' |
+  'diagonal-fractions' |
+  'stacked-fractions';

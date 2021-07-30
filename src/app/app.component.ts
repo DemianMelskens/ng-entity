@@ -3,10 +3,11 @@ import {InputComponent, ShapeComponent, SpeedComponent, TransformComponent} from
 import {Scene} from "../ng-entity/core/scene";
 import {Color, Stroke} from "../ng-entity/shared/domain/color";
 import {Renderer2d} from "../ng-entity/core/systems/renderer/renderer2d";
-import {Circle, Rectangle} from "../ng-entity/shared/domain/shape";
+import {Circle, Rectangle, Text} from "../ng-entity/shared/domain/shape";
 import {Canvas} from "../ng-entity/shared/domain/canvas";
 import {UserInput} from "../ng-entity/core/systems/input/user-input";
 import {Vector3d} from '../ng-entity/shared/domain/vector';
+import {Font} from "../ng-entity/shared/domain/text";
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,8 @@ export class AppComponent implements AfterViewInit {
   private _lastTimestamp: number = Date.now();
   scene: Scene = Scene.build();
   @ViewChild('canvas') canvasElement?: ElementRef<HTMLCanvasElement>;
+
+  fps?: Text;
 
   constructor() {
   }
@@ -50,18 +53,24 @@ export class AppComponent implements AfterViewInit {
     player4.addComponent(SpeedComponent, new Vector3d(5, 5, 1));
     player4.addComponent(InputComponent);
 
+    const fpsCounter = this.scene.createEntity('fpsCounter');
+    fpsCounter.getComponent(TransformComponent).transform.position = {x: 20, y: 20, z: 0};
+    this.fps = fpsCounter.addComponent(ShapeComponent, new Text('0', Font.fromSize('18px'), Color.hex('#000000'))).shape as Text;
+    fpsCounter.addComponent(SpeedComponent, new Vector3d(5, 5, 1));
+    fpsCounter.addComponent(InputComponent);
+
     // this.scene.onUpdate(0);
     this.loop();
   }
 
   private loop(): void {
-    const deltaTime = (Date.now() - this._lastTimestamp) / 1000
+    const deltaTime = (new Date().getTime() - this._lastTimestamp) / 1000
+    this._lastTimestamp = new Date().getTime()
     this.scene.onUpdate(deltaTime);
 
-    window.requestAnimationFrame(() => {
-      // set initial timestamp
-      this._lastTimestamp = Date.now()
+    this.fps!.text = `fps: ${Math.round(1 / deltaTime)}`;
 
+    window.requestAnimationFrame(() => {
       // start update loop
       this.loop()
     })
